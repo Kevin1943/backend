@@ -12,6 +12,12 @@ export class UserService {
   //   return `This action returns all user`;
   // }
 
+  create(): Promise<User> {
+    // TODO : encrpt password with bcrypt or something
+    // db.create(payload)
+    // return user
+  }
+
   async findOne(username: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ username });
     return user;

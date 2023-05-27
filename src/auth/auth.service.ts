@@ -5,14 +5,12 @@ import { User } from 'src/user/schema/user.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private userService: UserService, private jwtService: JwtService) {}
 
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOne(username);
 
+    // TODO : decrypt password if resgister with encrypt
     if (user && user.password === password) {
       return user;
     }
