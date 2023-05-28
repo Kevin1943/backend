@@ -1,22 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-export type UserDocument = HydratedDocument<User>;
+export type DeviceDocument = HydratedDocument<Device>;
 
 @Schema({
   timestamps: true,
 })
-export class User {
+export class Device {
   _id: mongoose.Types.ObjectId;
 
-  @Prop({ required: true, unique: true })
-  username: string;
+  @Prop({ required: true })
+  deviceName: string;
 
   @Prop({ required: true })
-  email: string;
+  deviceType: string;
 
-  @Prop({ required: true })
-  password: string;
+  @Prop({})
+  isActive: boolean;
 
   @Prop()
   createdAt?: Date;
@@ -25,4 +25,4 @@ export class User {
   updatedAt?: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const DeviceSchema = SchemaFactory.createForClass(Device);
