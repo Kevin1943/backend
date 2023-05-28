@@ -7,11 +7,7 @@ import { AuthModule } from './auth/auth.module';
 
 // TODO : change mongo path to .env
 @Module({
-  imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/dbname'),
-    UserModule,
-    AuthModule,
-  ],
+  imports: [MongooseModule.forRoot('mongodb://localhost:27017/dbname'), UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
