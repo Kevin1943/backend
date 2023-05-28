@@ -10,6 +10,13 @@ import { SignUpDto } from './dto/signup.dto';
 export class AuthService {
   constructor(private userService: UserService, private jwtService: JwtService) {}
 
+  private signJwtService(user: User): { access_token: string } {
+    const payload = { username: user.username, userId: user._id, email: user.email };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOne(username);
 
@@ -22,21 +29,15 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { username: user.username, userId: user._id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return this.signJwtService(user);
   }
 
   async signup(signUpDto: SignUpDto): Promise<{ access_token: string }> {
-    const { username, password } = signUpDto;
+    const { username, email, password } = signUpDto;
     const hashedPassowrd = await bcrypt.hash(password, 10);
 
-    const user = await this.userService.create({ username, password: hashedPassowrd });
+    const user = await this.userService.create({ username, email, password: hashedPassowrd });
 
-    const payload = { username: user.username, userId: user._id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return this.signJwtService(user);
   }
 }
