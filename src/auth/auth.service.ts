@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/schema/user.schema';
@@ -19,13 +19,17 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOne(username);
-
-    const isComparedPassword = await bcrypt.compare(password, user.password);
-    if (user && isComparedPassword) {
-      return user;
+    if (!user) {
+      throw new UnauthorizedException({ status: HttpStatus.UNAUTHORIZED, message: 'username does not exists' });
     }
 
-    return null;
+    const isComparedPassword = await bcrypt.compare(password, user.password);
+
+    if (!isComparedPassword) {
+      throw new UnauthorizedException({ status: HttpStatus.UNAUTHORIZED, message: 'password does not match' });
+    }
+
+    return user;
   }
 
   async login(user: User) {
