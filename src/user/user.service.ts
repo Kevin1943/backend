@@ -17,9 +17,9 @@ export class UserService {
         throw new HttpException(
           {
             status: HttpStatus.BAD_REQUEST,
-            error: 'Username already exists',
+            message: ['Username already exists'],
           },
-          HttpStatus.FORBIDDEN,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
