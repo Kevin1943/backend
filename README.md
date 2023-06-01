@@ -45,6 +45,12 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Pre-Required
+local mongo db on port:27017
+i recommend use command below(for lastest mongo version) to start local db
+
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+
 ## Test
 
 ```bash
